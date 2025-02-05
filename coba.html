@@ -1,0 +1,223 @@
+
+<script src="src/js/aut.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Data Pengguna</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+            display: none; /* Form disembunyikan secara default */
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"], input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #00eeff;
+            color: rgb(29, 25, 25);
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #08949e;
+        }
+
+        #update-form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manajemen Data Pengguna</h1>
+
+    <!-- Tabel untuk menampilkan data pengguna -->
+    <table id="users-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Alamat</th>
+                <th>Nomor</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Foto</th>
+                <th>Dibuat Pada</th>
+                <th>Tindakan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data akan diisi secara dinamis -->
+        </tbody>
+    </table>
+
+    <h2>Perbarui Data</h2>
+    <form id="update-form" enctype="multipart/form-data">
+        <input type="hidden" id="update-id" name="id">
+        
+        <label for="update-nama">Nama:</label>
+        <input type="text" id="update-nama" name="nama" required>
+        
+        <label for="update-alamat">Alamat:</label>
+        <input type="text" id="update-alamat" name="alamat" required>
+
+        <label for="update-no">Nomor Telepon:</label>
+        <input type="text" id="update-no" name="no" required>
+
+        <label for="update-username">Username:</label>
+        <input type="text" id="update-username" name="username" required>
+
+        <label for="update-password">Password:</label>
+        <input type="password" id="update-password" name="password">
+
+        <label for="update-email">Email:</label>
+        <input type="email" id="update-email" name="email" required>
+
+        <label for="update-status">Status:</label>
+        <input type="text" id="update-status" name="status" required>
+
+        <label for="update-foto">Foto (Opsional):</label>
+        <input type="file" id="update-foto" name="foto">
+
+        <button type="submit">Perbarui</button>
+        <button type="button" id="cancel-edit">Batal</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tableBody = document.querySelector('#users-table tbody');
+            const updateForm = document.getElementById('update-form');
+            const cancelEditBtn = document.getElementById('cancel-edit');
+
+            // Fungsi untuk memuat data dari server
+            function loadData() {
+                fetch('api.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            tableBody.innerHTML = '';
+                            data.data.forEach(user => {
+                                tableBody.innerHTML += `
+                                    <tr>
+                                        <td>${user.id}</td>
+                                        <td>${user.nama}</td>
+                                        <td>${user.alamat}</td>
+                                        <td>${user.no}</td>
+                                        <td>${user.username}</td>
+                                        <td>${user.password}</td>
+                                        <td>${user.email}</td>
+                                        <td>${user.status}</td>
+                                        <td>${user.foto ? `<img src="${user.foto}" alt="Foto" style="width:50px;">` : '-'}</td>
+                                        <td>${user.created_at}</td>
+                                        <td>
+                                            <button onclick="populateForm(${user.id}, '${user.nama}', '${user.alamat}', '${user.no}', '${user.username}', '${user.password}', '${user.email}', '${user.status}', '${user.foto}')">Edit</button>
+                                            <button onclick="deleteUser(${user.id})">Hapus</button>
+                                        </td>
+                                    </tr>
+                                `;
+                            });
+                        } else {
+                            alert(data.error);
+                        }
+                    });
+            }
+
+            // Mengisi form untuk pembaruan
+            window.populateForm = function (id, nama, alamat, no, username, password, email, status, foto) {
+                document.getElementById('update-id').value = id;
+                document.getElementById('update-nama').value = nama;
+                document.getElementById('update-alamat').value = alamat;
+                document.getElementById('update-no').value = no;
+                document.getElementById('update-username').value = username;
+                document.getElementById('update-password').value = password;
+                document.getElementById('update-email').value = email;
+                document.getElementById('update-status').value = status;
+
+                // Menampilkan form edit
+                updateForm.style.display = 'block';
+            };
+
+            // Submit form pembaruan
+            updateForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const formData = new FormData(updateForm);
+
+                fetch('api.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message || data.error);
+                    loadData();
+                    updateForm.style.display = 'none';  // Sembunyikan form setelah submit
+                })
+                .catch(error => console.error("Terjadi kesalahan:", error));
+            });
+
+            // Fungsi untuk menghapus pengguna
+            window.deleteUser = function (id) {
+                if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                    fetch(`api.php?id=${id}`, { method: 'DELETE' })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.message || data.error);
+                            loadData();
+                        })
+                        .catch(error => console.error("Terjadi kesalahan:", error));
+                }
+            };
+
+            // Membatalkan pengeditan dan menyembunyikan form
+            cancelEditBtn.addEventListener('click', function () {
+                updateForm.style.display = 'none';
+            });
+
+            loadData();
+        });
+    </script>
+</body>
+</html>

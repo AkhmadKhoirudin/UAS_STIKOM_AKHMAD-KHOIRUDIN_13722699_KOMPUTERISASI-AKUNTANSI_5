@@ -1,0 +1,120 @@
+/* Style dasar untuk body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+/* Style untuk div pembungkus utama */
+.caktu {
+    background-image: url(../img/bgcard.jpg);
+    padding: 40px 0; /* Jarak atas dan bawah */
+    text-align: center; /* Center align untuk teks */
+    width: 100%; /* Lebar penuh */
+    margin: 0; /* Menghapus margin */
+    box-sizing: border-box;
+}
+
+.section-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.card-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto; /* Center align card container */
+    flex-wrap: wrap; /* Memungkinkan kartu untuk membungkus ke baris baru */
+}
+
+.card {
+    background-color: #ffffff4b;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    flex: 1 1 calc(30% - 20px); /* Membuat kartu responsif, 3 kartu per baris */
+    max-width: 280px; /* Setel lebar maksimum kartu */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    width: 200px;
+    height: 130px;
+}
+
+.card h3 {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.card p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Responsive untuk layar kecil */
+@media (max-width: 768px) {
+    .card {
+        flex: 1 1 calc(30% - 20px); /* 2 kartu per baris */
+    }
+
+}
+
+@media (max-width: 494px) {
+    .card-container {
+        flex-direction: column; /* Menyusun kartu dalam satu kolom pada layar kecil */
+        align-items: center; /* Rata tengah untuk kartu */
+    }
+    .card {
+        flex: 1 1 50%; /* Kartu akan memenuhi lebar penuh */
+    }
+}
+
+@media (max-width: 400px) {
+    .card {
+        width: 100%; /* Kartu akan memenuhi lebar penuh pada ukuran layar terkecil */
+    }
+
+}
+
+
+
+
+/* Gaya untuk produk dengan stok kosong */
+.out-of-stock {
+    opacity: 0.5; /* Efek transparan */
+    pointer-events: none; /* Tidak dapat diklik */
+    background-color: #181818; /* Warna abu-abu muda untuk card */
+    border: 1px solid #000000; /* Border lebih lembut */
+}
+
+.out-of-stock img {
+    filter: grayscale(100%); /* Buat gambar menjadi hitam-putih */
+}
+
+.out-of-stock h3,
+.out-of-stock p {
+    text-decoration: line-through; /* Coret teks produk */
+    color: #3d3c3c; /* Warna abu-abu untuk teks */
+}
+
+.out-of-stock .btn {
+    cursor: not-allowed; /* Pointer berubah menjadi tanda larangan */
+    background-color: #646363; /* Warna abu-abu untuk tombol */
+    color: #3b3b3b; /* Warna teks putih pada tombol */
+    border: none; /* Hilangkan border */
+}
+
+
+
+

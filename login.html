@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container { 
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="form-container">
+            <ul class="nav nav-tabs" id="authTab" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button">Login</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button">Register</button>
+                </li>
+            </ul>
+
+            <div class="tab-content mt-3">
+                <!-- Form Login -->
+                <div class="tab-pane fade show active" id="login" role="tabpanel">
+                    <h3 class="text-center">Login</h3>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="loginUsername" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                </div>
+
+                <!-- Form Register -->
+                <div class="tab-pane fade" id="register" role="tabpanel">
+                    <h3 class="text-center">Register</h3>
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label for="registerNama" class="form-label">Nama</label>
+                            <input type="text" class="form-control" id="registerNama" name="nama" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerAlamat" class="form-label">Alamat</label>
+                            <textarea class="form-control" id="registerAlamat" name="alamat" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerNo" class="form-label">Nomor Telepon</label>
+                            <input type="number" class="form-control" id="registerNo" name="no" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="registerUsername" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="registerEmail" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="registerPassword" name="password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerConfirmPassword" class="form-label">Konfirmasi Password</label>
+                            <input type="password" class="form-control" id="registerConfirmPassword" name="confirm_password" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Register</button>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <script>
+      document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const response = await fetch('src/php/login.php', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                // Simpan status di localStorage
+                localStorage.setItem('loggedIn', true);
+                localStorage.setItem('username', result.username);
+                localStorage.setItem('userId', result.userId);
+                localStorage.setItem('status', result.status); // Menyimpan status pengguna
+
+                alert(result.message);
+                window.location.href = 'index.html';  
+            } else {
+                alert(result.error || "Login gagal!");
+            }
+        });
+
+ 
+
+        document.getElementById('registerForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const response = await fetch('src/php/register.php', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const text = await response.text(); // Mengambil sebagai teks
+                try {
+                    const result = JSON.parse(text); // Coba parse JSON
+                    if (result.success) {
+                        alert(result.message);
+                        new bootstrap.Tab(document.getElementById('login-tab')).show();
+                    } else {
+                        alert(result.error || "Registrasi gagal!");
+                    }
+                } catch (error) {
+                    console.error("Tidak dapat mem-parsing JSON:", error);
+                    console.log("Respons Server:", text); // Debug respons yang diterima
+                    alert("Terjadi kesalahan pada server.");
+                }
+        });
+
+    </script>
+</body>
+</html>
+ 

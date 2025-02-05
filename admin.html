@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .profile-info {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            grid-gap: 20px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-info img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ddd;
+        }
+
+        .profile-info div {
+            font-size: 16px;
+        }
+
+        .profile-info label {
+            font-weight: bold;
+        }
+
+        .profile-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 50%;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .modal button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Close button */
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            float: right;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .profile-info {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-info img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .modal-content {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Profile</h1>
+        <div class="profile-info">
+            <div>
+                <label for="photo">Photo:</label>
+                <img id="userPhoto" src="default_photo.jpg" alt="User Photo">
+            </div>
+            <div>
+                <label for="id">id:</label>
+                <p id="id" >Loading...</p>
+
+                <label for="name">Name:</label>
+                <p id="userName">Loading...</p>
+
+                <label for="address">Address:</label>
+                <p id="userAddress">Loading...</p>
+
+                <label for="phone">Phone:</label>
+                <p id="userPhone">Loading...</p>
+
+                <label for="email">Email:</label>
+                <p id="userEmail">Loading...</p>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <button class="btn" onclick="openEditModal()">Edit Profile</button>
+        </div>
+    </div>
+
+    <!-- Modal for Editing Profile -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditModal()">&times;</span>
+                <h2>Edit Profile</h2>
+                <form id="editProfileForm" enctype="multipart/form-data">
+
+                    <input type="hidden" id="editUserId" name="userId">
+    <label for="editName">Name:</label>
+    <input type="text" id="editName" name="nama" required>
+    <label for="editAddress">Address:</label>
+    <input type="text" id="editAddress" name="alamat" required>
+    <label for="editPhone">Phone:</label>
+    <input type="text" id="editPhone" name="no" required>
+    <label for="editEmail">Email:</label>
+    <input type="email" id="editEmail" name="email" required>
+    <label for="editPhoto">Photo:</label>
+    <input type="file" id="editPhoto" name="foto" accept="image/*">
+    <button type="submit" class="btn">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+    <script>
+        const userId = localStorage.getItem('userId');
+
+        function showPlaceholder() {
+            document.getElementById('userPhoto').src = 'default_photo.jpg';
+            document.getElementById('userName').textContent = 'Loading...';
+            document.getElementById('userAddress').textContent = 'Loading...';
+            document.getElementById('userPhone').textContent = 'Loading...';
+            document.getElementById('userEmail').textContent = 'Loading...';
+        }
+
+        showPlaceholder();
+
+        if (!userId) {
+            alert('User not logged in! Redirecting to login page.');
+            window.location.href = 'login.html';
+        } else {
+           fetch(`src/php/fetch_user.php?userId=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert('Error fetching user data: ' + data.message);
+                return;
+            }
+
+            document.getElementById('id').textContent = data.id || 'N/A'; // Menampilkan ID
+            document.getElementById('userPhoto').src = data.photo || 'default_photo.jpg';
+            document.getElementById('userName').textContent = data.name || 'N/A';
+            document.getElementById('userAddress').textContent = data.address || 'N/A';
+            document.getElementById('userPhone').textContent = data.phone || 'N/A';
+            document.getElementById('userEmail').textContent = data.email || 'N/A';
+
+            document.getElementById('editName').value = data.name || '';
+            document.getElementById('editAddress').value = data.address || '';
+            document.getElementById('editPhone').value = data.phone || '';
+            document.getElementById('editEmail').value = data.email || '';
+        })
+        .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function openEditModal() {
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        document.getElementById('editProfileForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent default form submission
+            const formData = new FormData(this);
+
+            fetch('update_user.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                alert('Profile updated successfully!');
+                                closeEditModal();
+                                location.reload(); // Reload the page to show updated data
+                            } else {
+                                alert('Error updating profile: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error updating profile:', error);
+                            alert('Error: ' + error.message);
+        });
+
+    });
+
+    </script>
+</body>
+</html>

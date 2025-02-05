@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Navbar and Main Section</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Style untuk latar belakang gambar */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('src/img/bghome.png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Style untuk navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px; /* Padding pada navbar */
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+            
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin: 0 15px;
+        }
+
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .navbar .menu-icon {
+            display: none;
+            color: white;
+            font-size: 26px;
+            cursor: pointer;
+        }
+        
+        /* Style untuk sidebar mobile */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px; /* Ubah dari right ke left */
+            width: 250px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            transition: left 0.3s ease; /* Ubah dari right ke left */
+            padding-top: 60px;
+            z-index: 9;
+        }
+
+        #sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #sidebar ul li {
+            margin: 20px;
+        }
+
+        #sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            display: flex; /* Menambahkan flex untuk menyelaraskan */
+            align-items: center; /* Menyelaraskan item ke tengah vertikal */
+        }
+
+        /* Style untuk main content */
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding-top: 80px;
+            text-align: center;
+            color: #333;
+        }
+
+        main h1 {
+            font-size: 36px;
+            font-family: 'Caveat', cursive; /* Font ala toko kue Prancis */
+            color: white;
+        }
+        .container{
+            margin-top: 200px;
+            height: 100%; /* Pastikan body mengisi 100% tinggi layar */
+        }
+
+        /* Style untuk card menu */
+        /* .card-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+        } */
+
+        /* .card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+        } */
+
+        /* Responsive style */
+        @media (max-width: 768px) {
+            .navbar {
+                justify-content: space-between; /* Ubah menjadi space-between */
+            }
+            .navbar ul {
+                display: none; /* Sembunyikan menu di navbar */
+            }
+            .navbar .menu-icon {
+                display: block; /* Tampilkan ikon menu */
+            }
+            .card-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-container {
+                grid-template-columns: 1fr; /* Tampilkan satu kolom di mobile */
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="src/css/footer.css">
+    <link rel="stylesheet" href="src/css/about.css">
+</head>
+<body>
+<!--//bagian 1///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+  
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="menu-icon" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul>
+            <li><a href="index.html" id="homeLink">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="menu.html" id="menuLink">Menu</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Sidebar untuk Mobile -->
+    <div id="sidebar">
+        <ul>
+            <li>
+                <a onclick="toggleSidebar()" href="#">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26">
+                    <path fill="white" d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                </svg>
+                
+                    Close
+                </a>
+            </li>
+            <li><a href="index.html" id="sidebarHomeLink">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="menu.html" id="sidebarMenuLink">Menu</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Main content  -->
+    <main>
+        
+        <section class="about-section">
+            <h1>Tentang Kami</h1>
+            <p><em>Craquelin Patisserie</em> didirikan oleh empat sahabat yang memiliki semangat dan keahlian dalam dunia kuliner dan bisnis. Awalnya, mereka sering bereksperimen dengan berbagai resep pastry dan dessert di rumah, berbagi ide dan mencoba menciptakan inovasi dalam berbagai varian kue yang kekinian. Ketertarikan mereka pada dunia pastry, terutama pada produk-produk yang menggabungkan rasa otentik dan modern, menjadi alasan utama didirikannya Craquelin Patisserie.</p>
+            
+            <p>Dengan lokasi di <strong>Jalan Kedawung</strong>, Craquelin Patisserie bertujuan untuk menjadi tujuan utama para pencinta kue di sekitar kota. Mereka tidak hanya menyediakan produk berkualitas tinggi tetapi juga layanan yang memudahkan pelanggan—melalui Gojek dan Grab, pelanggan dapat dengan mudah memesan dari rumah atau kantor mereka.</p>
+    
+            <p>Masing-masing dari keempat pendiri memiliki peran penting dalam operasional Craquelin Patisserie: satu orang mengelola pengembangan resep dan inovasi produk, yang lain bertanggung jawab atas manajemen operasional, sementara dua lainnya mengurus pemasaran dan keuangan. Kolaborasi dan keahlian ini memastikan Craquelin Patisserie selalu menghadirkan kue-kue yang lezat dengan standar tinggi, baik dalam rasa maupun tampilan.</p>
+        </section>
+
+        <section class="vision-mission">
+            <h1>Visi & Misi</h1>
+            <p><strong>Visi:</strong> dari Craquelin Patisserie adalah menghadirkan pengalaman menikmati pastry premium yang bisa dinikmati semua kalangan.</p>
+            <p><strong>Misi:</strong> mereka adalah menjaga kualitas bahan baku, konsistensi rasa, dan terus berinovasi untuk menghadirkan produk yang unik dan berkualitas tinggi, sesuai dengan tren yang digemari saat ini.</p>
+        </section>
+    
+    </main>
+    <footer>
+        &copy; 2024 Your Happy Baker. All Rights Reserved.
+    </footer>
+ <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+    <!-- <script>
+       function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.style.left === '0px') {
+                sidebar.style.left = '-250px'; // Tutup sidebar
+            } else {
+                sidebar.style.left = '0'; // Tampilkan sidebar
+            }
+        }
+          
+    </script> -->
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.style.left === '0px') {
+                sidebar.style.left = '-250px'; // Tutup sidebar
+            } else {
+                sidebar.style.left = '0'; // Tampilkan sidebar
+            }
+        }
+    
+        // Deteksi swipe untuk menutup sidebar di perangkat mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+    
+        function handleGesture() {
+            const sidebar = document.getElementById('sidebar');
+            if (touchStartX - touchEndX > 50) {
+                sidebar.style.left = '-250px'; // Tutup sidebar
+            }
+        }
+    
+        sidebar.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+    
+        sidebar.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleGesture();
+        });
+    
+        // Event listener untuk menutup sidebar saat layar diubah ukurannya
+        window.addEventListener('resize', () => {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth > 768) { // Ukuran layar yang dianggap sebagai desktop
+                sidebar.style.left = '-250px'; // Tutup sidebar jika layar lebih besar
+            }
+        });
+    </script>
+    
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="src/js/aut.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    nav.sidebar {
+      width: 50px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background-color: #007bff;
+      color: white;
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      z-index: 1000;
+    }
+
+    nav.sidebar.expanded {
+      width: 200px;
+    }
+
+    nav.sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    nav.sidebar ul li {
+      width: 100%;
+      text-align: left;
+    }
+
+    nav.sidebar ul li a {
+      text-decoration: none;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      transition: background 0.3s;
+    }
+
+    nav.sidebar ul li a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    nav.sidebar ul li a .text {
+      margin-left: 10px;
+      display: none;
+    }
+
+    nav.sidebar.expanded ul li a .text {
+      display: inline-block;
+    }
+
+    .sidebar-logout {
+      width: 100%;
+      text-align: left;
+    }
+
+    .sidebar-logout a {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      text-decoration: none;
+      color: white;
+      padding: 10px;
+    }
+
+    .sidebar-logout .text {
+      margin-left: 10px;
+      display: none;
+    }
+
+    nav.sidebar.expanded .sidebar-logout .text {
+      display: inline-block;
+    }
+
+    .iframe-container {
+      margin-left: 50px;
+      width: calc(100% - 50px);
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    @media (max-width: 768px) {
+      nav.sidebar {
+        width: 50px;
+      }
+
+      nav.sidebar.expanded {
+        width: 150px;
+      }
+    } 
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+    <ul>
+      <li><a onclick="loadPage('home.html')"><i class="fas fa-home"></i><span class="text">Dashboard</span></a></li>
+      <li><a onclick="loadPage('list.html')"><i class="fas fa-list"></i><span class="text">List Menu</span></a></li>
+      <li><a onclick="loadPage('orders.html')"><i class="fas fa-comments"></i><span class="text">Comments</span></a></li>
+      <li><a onclick="loadPage('users.html')"><i class="fas fa-user-friends"></i><span class="text">list user</span></a></li>      
+      <li><a onclick="loadPage('admin.html')"><i class="fas fa-user"></i><span class="text">Account</span></a></li>
+    </ul>
+    <div class="sidebar-logout">
+      <a href="#" id="logoutButton"><i class="fas fa-sign-out-alt"></i><span class="text">Log Out</span></a>
+    </div>
+  </nav>
+
+  <div class="iframe-container">
+    <iframe id="iframe" src="home.html"></iframe>
+  </div>
+
+  <div id="usernameDisplay" style="display: none;"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const status = localStorage.getItem("status");
+
+        if (status !== "admin") {
+          // Sembunyikan menu yang hanya untuk admin
+          document.querySelector('a[onclick="loadPage(\'users.html\')"]').style.display = "none";
+          document.querySelector('a[onclick="loadPage(\'admin.html\')"]').style.display = "none";
+        }
+
+        // Tampilkan nama pengguna di tempat tertentu jika diperlukan
+        const usernameDisplay = document.getElementById("usernameDisplay");
+        usernameDisplay.style.display = "block";
+        usernameDisplay.textContent = `Selamat datang, ${localStorage.getItem("username")}`;
+      });
+
+    $(function () {
+      const sidebar = $('nav.sidebar');
+
+      sidebar.on('mouseenter', function () {
+        sidebar.addClass('expanded');
+      });
+
+      sidebar.on('mouseleave', function () {
+        sidebar.removeClass('expanded');
+      });
+    });
+
+    function loadPage(page) {
+      const iframe = document.getElementById('iframe');
+      if (!iframe.src.endsWith(page)) {
+        iframe.src = page;
+      }
+    }
+
+    document.getElementById('logoutButton').onclick = function() {
+      localStorage.removeItem('loggedIn');
+      localStorage.removeItem('username');
+      window.location.href = 'login.html';
+    };
+  </script>
+</body>
+</html>

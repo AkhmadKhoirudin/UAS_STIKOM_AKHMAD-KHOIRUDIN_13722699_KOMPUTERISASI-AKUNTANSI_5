@@ -1,0 +1,10 @@
+Array
+(
+    [name] => Akhmad Khoirudin
+    [address] => desa:kreyo block:2 kebon:saron
+    [phone] => 081322878692
+    [email] => akhmadwibu05@outlook.com
+    [payment_method] => credit_card
+    [shipping_method] => standard
+    [cart] => [{"id":"18","name":"Kue & Cupcake","price":90000,"image":"src/img/prodak/cake.png","quantity":1},{"id":"16","name":"Bolen Keju","price":45000,"image":"src/img/prodak/keju.jpg","quantity":1}]
+)

@@ -1,0 +1,71 @@
+/* Main Section Styling */
+main {
+    max-width: 80%;
+    margin: 40px auto; /* Centers content horizontally */
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Section Header */
+.about-section h1, .vision-mission h1 {
+    font-size: 28px;
+    color: #d2691e; /* Brown color for patisserie theme */
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* About Section Paragraphs */
+.about-section p {
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: justify;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+/* Vision & Mission Styling */
+.vision-mission {
+    text-align: center; /* Center-aligns content for desktop and mobile */
+    margin-top: 30px;
+}
+
+.vision-mission h1 {
+    font-size: 24px;
+    color: #d2691e;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.vision-mission p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 10px 0;
+    color: #333;
+}
+
+.vision-mission p strong {
+    color: #d2691e;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    main {
+        padding: 15px;
+        margin: 10px auto; /* Centers main section horizontally on mobile */
+    }
+
+    .about-section h1, .vision-mission h1 {
+        font-size: 24px;
+    }
+
+    .about-section p, .vision-mission p {
+        font-size: 14px;
+    }
+
+    /* Ensure center alignment on mobile */
+    .about-section, .vision-mission {
+        text-align: center;
+    }
+}

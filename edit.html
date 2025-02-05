@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <script src="src/js/aut.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <link rel="stylesheet" href="src/css/list.css">
+</head>
+<body>
+    <h1>Edit Product</h1>
+    <form action="src/php/edit.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" id="product-id" name="id">
+        
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea><br><br>
+        
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price" required><br><br>
+        
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image" onchange="showImageName()">
+        
+        <!-- Menampilkan Gambar yang Ada -->
+        <div id="image-preview-container" style="margin-top: 10px;">
+            <p><strong>nama Image:</strong></p>
+            <img id="current-image" src="" alt="Product Image" style="max-width: 200px;">
+            <p id="image-name"></p>
+        </div>
+        
+        <br><br>
+        <button type="submit" name="update">Update Product</button>
+    </form>
+
+    <script>
+        // Fungsi untuk menampilkan gambar dan nama file yang dipilih
+        function showImageName() {
+            const fileInput = document.getElementById("image");
+            const imageName = fileInput.files[0]?.name;
+            const imagePreview = document.getElementById("current-image");
+            const imageNameContainer = document.getElementById("image-name");
+            
+            if (imageName) {
+                imagePreview.src = URL.createObjectURL(fileInput.files[0]); // Menampilkan gambar yang dipilih
+                imagePreview.style.display = "block";
+                imageNameContainer.textContent = `Selected file: ${imageName}`;
+            } else {
+                imagePreview.style.display = "none";
+                imageNameContainer.textContent = "";
+            }
+        }
+
+        // Ambil parameter ID dari URL dan fetch data produk saat halaman dimuat
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get("id");
+
+            // Mengambil data produk dari server
+            fetch(`src/php/edit.php?id=${id}`)
+                .then(response => response.json())
+                .then(product => {
+                    document.getElementById("product-id").value = product.id;
+                    document.getElementById("name").value = product.name;
+                    document.getElementById("description").value = product.description;
+                    document.getElementById("price").value = product.price;
+
+                    // Menampilkan gambar yang ada
+                    const currentImage = document.getElementById("current-image");
+                    currentImage.src = product.image;
+                    currentImage.style.display = "block";
+
+                    // Menampilkan hanya nama file tanpa folder
+                    const imageName = product.image.split('/').pop(); // Mengambil nama file saja
+                    document.getElementById("image-name").textContent = `Current image: ${imageName}`;
+                })
+                .catch(error => console.error("Error fetching product data:", error));
+        });
+    </script>
+</body>
+</html>

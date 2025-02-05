@@ -1,0 +1,78 @@
+
+
+/* Welcome section layout */
+.welcome-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 90%;
+    padding: 20px;
+    background-color: rgba(75, 44, 32, 0.9); /* Dark background with transparency */
+    border-radius: 15px;
+    color: #fff;
+    margin-top: 30%;
+    margin-bottom: 10%;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Desktop layout: text on the left, image on the right */
+.welcome-content {
+    flex: 1;
+    max-width: 50%; /* Restricts the text area to the left half */
+    padding: 20px;
+    text-align: left;
+}
+
+.image-container {
+    flex: 1;
+    max-width: 50%; /* Restricts the image to the right half */
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-container img {
+    width: 100%;
+    max-width: 300px; /* Optional max-width for the image */
+    border-radius: 10px;
+}
+
+/* Text styling */
+.welcome-text {
+    font-size: 2.2rem;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.patisserie-name {
+    font-size: 2.5rem;
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 10px;
+}
+
+.tagline {
+    font-size: 1.2rem;
+}
+@media (max-width: 768px) { /* Mobile devices */
+    .welcome-section {
+        flex-direction: column; /* Stack content vertically */
+        text-align: center;
+        justify-content:center;
+    }
+
+    .welcome-content, .image-container {
+        max-width: 100%; /* Full width for both text and image */
+    }
+
+    .welcome-content {
+        margin-bottom: 20px; /* Space between text and image */
+    }
+
+    .patisserie-name {
+        margin-bottom: 5px; /* Additional space below the title */
+    }
+}
